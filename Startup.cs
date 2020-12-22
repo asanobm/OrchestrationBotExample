@@ -3,15 +3,19 @@
 //
 // Generated with EchoBot .NET Template version v4.11.1
 
+using System.Globalization;
+using EchoBot;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using OrchestrationBotExample.Middleware;
 
-namespace EchoBot
+namespace OrchestrationBotExample
 {
     public class Startup
     {
@@ -31,7 +35,21 @@ namespace EchoBot
             services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 
             // Create the bot as a transient. In this case the ASP Controller is expecting an IBot.
-            services.AddTransient<IBot, Bots.EchoBot>();
+            services.AddTransient<IBot, OrchestrationBotExample.Bots.EchoBot>();
+            
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("ja-JP")
+                };
+                options.DefaultRequestCulture = new RequestCulture("ja-JP", "ja-JP");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

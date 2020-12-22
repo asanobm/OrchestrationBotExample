@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
+using Microsoft.Extensions.Localization;
 
 namespace EchoBot.Controllers
 {
@@ -17,11 +18,16 @@ namespace EchoBot.Controllers
     [ApiController]
     public class BotController : ControllerBase
     {
+        private readonly IStringLocalizer<BotController> Localizer;
         private readonly IBotFrameworkHttpAdapter Adapter;
         private readonly IBot Bot;
 
-        public BotController(IBotFrameworkHttpAdapter adapter, IBot bot)
+        public BotController(
+            IStringLocalizer<BotController> localizer,
+            IBotFrameworkHttpAdapter adapter,
+            IBot bot)
         {
+            Localizer = localizer;
             Adapter = adapter;
             Bot = bot;
         }

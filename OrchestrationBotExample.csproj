@@ -16,4 +16,23 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Bots\EchoBot.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EchoBot.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Bots\EchoBot.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EchoBot.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
 </Project>

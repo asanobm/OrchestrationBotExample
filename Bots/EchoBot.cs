@@ -4,31 +4,30 @@
 // Generated with EchoBot .NET Template version v4.11.1
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
+using Microsoft.Extensions.Localization;
 
-namespace EchoBot.Bots
+namespace OrchestrationBotExample.Bots
 {
-    public class EchoBot : ActivityHandler
+    public partial class EchoBot : ActivityHandler
     {
+        private IStringLocalizer<EchoBot> Localizer;
+        public EchoBot(
+            IStringLocalizer<EchoBot> localizer)
+        {
+            Localizer = localizer;
+        }
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            var replyText = $"Echo: {turnContext.Activity.Text}";
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(turnContext.Activity.Locale);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(turnContext.Activity.Locale);
+         
+            var replyText = $"Echo: {turnContext.Activity.Text}, {Localizer.GetString("Welcome")}, {turnContext.Activity.Locale}";
             await turnContext.SendActivityAsync(MessageFactory.Text(replyText, replyText), cancellationToken);
-        }
-
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            var welcomeText = "Hello and welcome!";
-            foreach (var member in membersAdded)
-            {
-                if (member.Id != turnContext.Activity.Recipient.Id)
-                {
-                    await turnContext.SendActivityAsync(MessageFactory.Text(welcomeText, welcomeText), cancellationToken);
-                }
-            }
         }
     }
 }
